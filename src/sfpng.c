@@ -24,7 +24,6 @@ sfpng_decoder* sfpng_decoder_new() {
     return NULL;
 
   memset(decoder, 0, sizeof(*decoder));
-  crc_init_table(decoder->crc_table);
 
   return decoder;
 }
@@ -672,8 +671,9 @@ sfpng_status sfpng_decoder_write(sfpng_decoder* decoder,
       expected_crc = ntohl(expected_crc);
 
       uint32_t actual_crc =
-          crc_compute(decoder->crc_table, decoder->chunk_type,
-                      decoder->chunk_buf, decoder->chunk_len);
+        crc32(
+          crc32(0, (unsigned char *)decoder->chunk_type, 4),
+          (unsigned char *)decoder->chunk_buf, decoder->chunk_len);
 
       if (actual_crc != expected_crc)
         return SFPNG_ERROR_BAD_CRC;

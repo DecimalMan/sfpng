@@ -1,7 +1,5 @@
 #include <zlib.h>  /* z_stream */
 
-#include "crc.h"  /* crc_table */
-
 typedef enum {
   STATE_SIGNATURE,
   STATE_CHUNK_HEADER,
@@ -31,8 +29,6 @@ typedef struct {
 } trans;
 
 struct _sfpng_decoder {
-  crc_table crc_table;
-
   /* User-specified context pointer. */
   void* context;
 
