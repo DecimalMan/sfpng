@@ -698,7 +698,7 @@ void sfpng_decoder_free(sfpng_decoder* decoder) {
   if (decoder->scanline_buf)
     free(min(decoder->scanline_buf, decoder->scanline_prev_buf));
   if (decoder->zlib_stream.next_in) {
-    int status = inflateEnd(&decoder->zlib_stream);
+    inflateEnd(&decoder->zlib_stream);
     /* We don't care about a bad status at this point. */
   }
   if (decoder->palette.bytes)
