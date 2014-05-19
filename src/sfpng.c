@@ -389,10 +389,13 @@ static sfpng_status process_trns_chunk(sfpng_decoder* decoder,
 static sfpng_status inflate_fully(stream* src, uint8_t** out_buf, int* out_len) {
   int ret = SFPNG_SUCCESS;
   uint8_t buf[8 << 10];
-  z_stream zlib = {};
+  z_stream zlib;
 
   *out_buf = NULL;
   *out_len = 0;
+  zlib.zalloc = Z_NULL;
+  zlib.zfree = Z_NULL;
+  zlib.opaque = Z_NULL;
   zlib.next_in = (uint8_t*)src->buf;
   zlib.avail_in = src->len;
   if (inflateInit(&zlib) != Z_OK)
